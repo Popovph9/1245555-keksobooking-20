@@ -2,8 +2,9 @@
 
 var PINS = 8;
 var AVATAR = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
+var ADDRESS = '600, 350';
 var FLAT_TYPE = ['palace', 'flat', 'house', 'bungalo'];
-var CHECKIN = ['12:00', '13:00',  '14:00'];
+var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -25,37 +26,42 @@ var getRandomArray = function (arr) {
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var createNotification = function (avatarImg, flatType, arrive, depart, perks, photo) {
+var createNotification = function (avatarImg, position, flatType, arrive, depart, perks, photo) {
+  var customNotification = {
+    author: {
+      avatar: avatarImg,
+    },
+    offer: {
+      title: 'заголовок предложения',
+      address: position,
+      price: getRandomInRange(1000, 10000),
+      type: flatType[getRandomInRange(0, flatType.length - 1)],
+      rooms: getRandomInRange(1, 4),
+      guests: getRandomInRange(1, 4),
+      checkin: arrive[getRandomInRange(0, arrive.length - 1)],
+      checkout: depart[getRandomInRange(0, depart.length - 1)],
+      feature: getRandomArray(perks),
+      description: 'описание предложения',
+      photos: getRandomArray(photo)
+    },
+    location: {
+      x: getRandomInRange(MAP_RANGEX_MIN, MAP_RANGEX_MAX) + PIN_WIDTH / 2,
+      y: getRandomInRange(MAP_RANGEY_MIN, MAP_RANGEY_MAX)
+    }
+  };
+  return customNotification;
+};
+
+var createNotifications = function (avatarImg, position, flatType, arrive, depart, perks, photo) {
   var notificationArray = [];
   for (var i = 0; i < PINS; i++) {
-    var customNotification = {
-      author: {
-        avatar: avatarImg[i],
-      },
-      offer: {
-        title: 'заголовок предложения',
-        address: "600, 350",
-        price: getRandomInRange(1000, 10000),
-        type: flatType[getRandomInRange(0, flatType.length - 1)],
-        rooms: getRandomInRange(1, 4),
-        guests: getRandomInRange(1, 4),
-        checkin: arrive[getRandomInRange(0, arrive.length - 1)],
-        checkout: depart[getRandomInRange(0, depart.length - 1)],
-        feature: getRandomArray(perks),
-        description: 'описание предложения',
-        photos: getRandomArray(photo)
-      },
-      location: {
-        x: getRandomInRange(MAP_RANGEX_MIN, MAP_RANGEX_MAX) + PIN_WIDTH / 2,
-        y: getRandomInRange(MAP_RANGEY_MIN, MAP_RANGEY_MAX)
-      }
-    }
-    notificationArray.push(customNotification);
+    var notification = createNotification(avatarImg[i], position, flatType, arrive, depart, perks, photo);
+    notificationArray.push(notification);
   }
   return notificationArray;
 };
 
-var notifications = createNotification(AVATAR, FLAT_TYPE, CHECKIN, CHECKOUT, FEATURES, PHOTOS);
+var notifications = createNotifications(AVATAR, ADDRESS, FLAT_TYPE, CHECKIN, CHECKOUT, FEATURES, PHOTOS);
 
 var pinsOnMap = document.querySelector('.map__pins');
 var similarPin = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -63,8 +69,8 @@ var similarPin = document.querySelector('#pin').content.querySelector('.map__pin
 var renderPins = function (arr) {
   for (var i = 0; i < PINS; i++) {
     var fragment = similarPin.cloneNode(true);
-    fragment.style.left = arr[i].location.x  + 'px';
-    fragment.style.top = arr[i].location.y  + 'px';
+    fragment.style.left = arr[i].location.x + 'px';
+    fragment.style.top = arr[i].location.y + 'px';
     fragment.querySelector('img').src = arr[i].author.avatar;
     fragment.querySelector('img').alt = arr[i].offer.title;
     pinsOnMap.appendChild(fragment);
