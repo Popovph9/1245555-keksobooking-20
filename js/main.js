@@ -13,20 +13,37 @@ var MAP_RANGEX_MAX = 1110;
 var MAP_RANGEY_MIN = 130;
 var MAP_RANGEY_MAX = 630;
 var PIN_WIDTH = 50;
+var PHOTO_SIZE = {
+  'width': 45,
+  'height': 40
+};
 
 var getRandomInRange = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getRandomArray = function (arr) {
-  arr.length = getRandomInRange(1, arr.length);
-  return arr;
+var getRandomInteger = function (min, max) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1);
+
+  return Math.round(rand);
+};
+
+var getRandomArray = function (array) {
+  var anotherArray = [];
+
+  array.forEach(function (item) {
+    if (getRandomInteger(0, 1) === 1) {
+      anotherArray.push(item);
+    }
+  });
+
+  return anotherArray;
 };
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-var createNotification = function (avatarImg, position, flatType, arrive, depart, perks, photo) {
+var createNotification = function (avatarImg, position, flatType, arrive, depart, perks) {
   var customNotification = {
     author: {
       avatar: avatarImg,
@@ -42,7 +59,7 @@ var createNotification = function (avatarImg, position, flatType, arrive, depart
       checkout: depart[getRandomInRange(0, depart.length - 1)],
       feature: getRandomArray(perks),
       description: 'описание предложения',
-      photos: getRandomArray(photo)
+      photos: getRandomArray(PHOTOS)
     },
     location: {
       x: getRandomInRange(MAP_RANGEX_MIN, MAP_RANGEX_MAX) + PIN_WIDTH / 2,
@@ -84,16 +101,37 @@ var cardsOnMap = document.querySelector('.map__filters-container');
 var similarCard = document.querySelector('#card').content.querySelector('.map__card');
 var cardFragment = similarCard.cloneNode(true);
 
-var createPhoto = function (className, alt, width, height, src) {
-  var customPhoto = document.createElement('img');
-  customPhoto.classList.add(className);
-  cardFragment.querySelector('.popup__photo').src = src;
-  customPhoto.alt = alt;
-  customPhoto.style.width = width;
-  customPhoto.style.height = height;
-  return customPhoto;
+var removeChildren = function (parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 };
 
+var renderPhoto = function (parentNode, photos) {
+  removeChildren(parentNode);
+
+  for (var i = 0; i < photos.length; i++) {
+    var photoElement = document.createElement('img');
+
+    photoElement.src = photos[i];
+    photoElement.classList.add('popup__photo');
+    photoElement.width = PHOTO_SIZE.width;
+    photoElement.height = PHOTO_SIZE.height;
+
+    parentNode.appendChild(photoElement);
+  }
+};
+
+var renderFeature = function (parentNode, features) {
+  removeChildren(parentNode);
+
+  for (var i = 0; i < features.length; i++) {
+    var featureItem = document.createElement('li');
+    featureItem.classList.add('popup__feature', 'popup__feature--' + features[i]);
+
+    parentNode.appendChild(featureItem);
+  }
+};
 
 var renderCard = function (arr) {
   cardFragment.querySelector('.popup__avatar').src = arr[0].author.avatar;
@@ -116,32 +154,15 @@ var renderCard = function (arr) {
   cardFragment.querySelector('.popup__text--capacity').textContent = arr[0].offer.rooms + ' комнаты для ' + arr[0].offer.guests + ' гостей';
   cardFragment.querySelector('.popup__text--time').textContent = 'Заезд после ' + arr[0].offer.checkin + ',' + ' выезд до ' + arr[0].offer.checkout;
 
-  var featureBlock = cardFragment.querySelector('.popup__features');
-  var featuresList = featureBlock.children;
-  var selectedFeatures = arr[0].offer.feature;
+  var cardFeatures = cardFragment.querySelector('.popup__features');
 
-
-  if (featuresList.length !== selectedFeatures.length) {
-    for (var j = 0; j < featuresList.length; j++) {
-      if (featuresList[j].className === 'popup__feature popup__feature--' + selectedFeatures[j]) {
-        featuresList[j].style.backgroundColor = 'white';
-      } else {
-        featuresList[j].remove();
-      }
-    }
-  }
+  renderFeature(cardFeatures, arr[0].offer.feature);
 
   cardFragment.querySelector('.popup__description').textContent = arr[0].offer.description;
 
-  if (arr[0].offer.photos.length > 1) {
-    for (var i = 0; i < arr[0].offer.photos.length - 1; i++) {
-      var photosList = cardFragment.querySelector('.popup__photos');
-      var customPhoto = createPhoto('popup__photo', 'Фотография жилья', '45', '40', arr[0].offer.photos[i]);
-      photosList.appendChild(customPhoto);
-    }
-  } else {
-    cardFragment.querySelector('.popup__photo').src = arr[0].offer.photos[0];
-  }
+  var cardPhotos = cardFragment.querySelector('.popup__photos');
+
+  renderPhoto(cardPhotos, arr[0].offer.photos);
 
   cardsOnMap.before(cardFragment);
 };
