@@ -8,15 +8,20 @@ var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var MAP_WIDTH = 1200;
+var MAP_HEIGHT = 750;
 var MAP_RANGEX_MIN = 50;
 var MAP_RANGEX_MAX = 1110;
 var MAP_RANGEY_MIN = 130;
 var MAP_RANGEY_MAX = 630;
 var PIN_WIDTH = 50;
-var PHOTO_SIZE = {
+var PIN_HEIGHT = 70;
+var MAINPIN_WIDTH = 62;
+var MAINPIN_HEIGHT = 84;
+/* var PHOTO_SIZE = {
   'width': 45,
   'height': 40
-};
+}; */
 
 var getRandomInRange = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -40,8 +45,97 @@ var getRandomArray = function (array) {
   return anotherArray;
 };
 
+var mainPin = document.querySelector('.map__pin--main');
+
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+
+var mapFilters = document.querySelector('.map__filters');
+mapFilters.classList.add('map__filters--disabled');
+
+var mainForm = document.querySelector('.ad-form');
+
+var filds = document.querySelectorAll('fieldset');
+
+
+var hideFields = function (arr) {
+  for (var i = 0; i < arr.length - 1; i++) {
+    arr[i].setAttribute('disabled', 'disabled');
+  }
+  return arr;
+};
+
+hideFields(filds);
+
+var showFeilds = function (arr) {
+  for (var i = 0; i < arr.length - 1; i++) {
+    arr[i].removeAttribute('disabled', 'disabled');
+  }
+  return arr;
+};
+
+var addresField = mainForm.querySelector('#address');
+
+var mainPinCenterX = Math.round(MAP_WIDTH / 2);
+
+var mainPinCenterY = Math.round(MAP_HEIGHT / 2 + MAINPIN_WIDTH / 2);
+
+addresField.value = mainPinCenterX + ',' + mainPinCenterY;
+
+var getAddres = function (x, y) {
+  var coordX = x + MAINPIN_WIDTH / 2;
+  var coordY = y + MAINPIN_HEIGHT;
+  addresField.value = coordX + ',' + coordY;
+};
+
+var mainPinDragHandler = function (evt) {
+  if (evt.which === 1) {
+    getStarted();
+    renderPins(notifications);
+
+    mainPin.removeEventListener('keydown', mainPinKeyHandler);
+  }
+};
+
+var mainPinKeyHandler = function (evt) {
+  if (evt.key === 'Enter') {
+    getStarted();
+    renderPins(notifications);
+
+    mainPin.removeEventListener('mousedown', mainPinDragHandler);
+  }
+};
+
+mainPin.addEventListener('mousedown', mainPinDragHandler);
+mainPin.addEventListener('keydown', mainPinKeyHandler);
+
+var getStarted = function () {
+  map.classList.remove('map--faded');
+  mapFilters.classList.remove('map__filters--disabled');
+  mainForm.classList.remove('ad-form--disabled');
+  showFeilds(filds);
+  getAddres(mainPinCenterX - MAINPIN_WIDTH / 2, mainPinCenterY - MAINPIN_WIDTH / 2);
+  roomFeild.addEventListener('change', guestFieldChangeHandler);
+  resetButton.addEventListener('click', resetButtonClickHandler);
+  mainPin.removeEventListener('mousedown', mainPinDragHandler);
+  mainPin.removeEventListener('keydown', mainPinKeyHandler);
+};
+
+var resetPage = function () {
+  map.classList.add('map--faded');
+  mapFilters.classList.add('map__filters--disabled');
+  mainForm.classList.add('ad-form--disabled');
+  hideFields(filds);
+  mainPin.addEventListener('mousedown', mainPinDragHandler);
+  mainPin.addEventListener('keydown', mainPinKeyHandler);
+  roomFeild.removeEventListener('change', guestFieldChangeHandler);
+  resetButton.removeEventListener('click', resetButtonClickHandler);
+};
+
+var resetButtonClickHandler = function () {
+  resetPage();
+};
+
+var resetButton = document.querySelector('.ad-form__reset');
 
 var createNotification = function (avatarImg, position, flatType, arrive, depart, perks) {
   var customNotification = {
@@ -63,7 +157,7 @@ var createNotification = function (avatarImg, position, flatType, arrive, depart
     },
     location: {
       x: getRandomInRange(MAP_RANGEX_MIN, MAP_RANGEX_MAX) + PIN_WIDTH / 2,
-      y: getRandomInRange(MAP_RANGEY_MIN, MAP_RANGEY_MAX)
+      y: getRandomInRange(MAP_RANGEY_MIN, MAP_RANGEY_MAX - PIN_HEIGHT) + PIN_HEIGHT
     }
   };
   return customNotification;
@@ -94,9 +188,7 @@ var renderPins = function (arr) {
   }
   return pinsOnMap;
 };
-
-renderPins(notifications);
-
+/*
 var cardsOnMap = document.querySelector('.map__filters-container');
 var similarCard = document.querySelector('#card').content.querySelector('.map__card');
 var cardFragment = similarCard.cloneNode(true);
@@ -133,7 +225,7 @@ var renderFeature = function (parentNode, features) {
   }
 };
 
-var renderCard = function (arr) {
+ var renderCard = function (arr) {
   cardFragment.querySelector('.popup__avatar').src = arr[0].author.avatar;
   cardFragment.querySelector('.popup__title').textContent = arr[0].offer.title;
   cardFragment.querySelector('.popup__text--address').textContent = arr[0].offer.address;
@@ -167,4 +259,41 @@ var renderCard = function (arr) {
   cardsOnMap.before(cardFragment);
 };
 
-renderCard(notifications);
+ renderCard(notifications); */
+
+var roomFeild = mainForm.querySelector('#room_number');
+
+var guestField = mainForm.querySelector('#capacity');
+var guestFieldOptions = guestField.querySelectorAll('option');
+
+var setGuests = function () {
+  if (roomFeild.value === '1') {
+    guestField.value = 1;
+    guestFieldOptions[0].setAttribute('disabled', 'disabled');
+    guestFieldOptions[1].setAttribute('disabled', 'disabled');
+    guestFieldOptions[2].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[3].setAttribute('disabled', 'disabled');
+  } else if (roomFeild.value === '2') {
+    guestField.value = 2;
+    guestFieldOptions[0].setAttribute('disabled', 'disabled');
+    guestFieldOptions[1].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[2].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[3].setAttribute('disabled', 'disabled');
+  } else if (roomFeild.value === '3') {
+    guestField.value = 3;
+    guestFieldOptions[0].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[1].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[2].removeAttribute('disabled', 'disabled');
+    guestFieldOptions[3].setAttribute('disabled', 'disabled');
+  } else if (roomFeild.value === '100') {
+    guestField.value = 0;
+    guestFieldOptions[0].setAttribute('disabled', 'disabled');
+    guestFieldOptions[1].setAttribute('disabled', 'disabled');
+    guestFieldOptions[2].setAttribute('disabled', 'disabled');
+    guestFieldOptions[3].removeAttribute('disabled', 'disabled');
+  }
+};
+
+var guestFieldChangeHandler = function () {
+  setGuests();
+};
