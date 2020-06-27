@@ -18,6 +18,8 @@ var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var MAINPIN_WIDTH = 62;
 var MAINPIN_HEIGHT = 84;
+var ESCAPE_NUM = 'Escape';
+var ENTER_NUM = 'Enter';
 var PHOTO_SIZE = {
   'width': 45,
   'height': 40
@@ -124,7 +126,7 @@ var mainPinDragHandler = function (evt) {
 };
 
 var mainPinKeyHandler = function (evt) {
-  if (evt.key === 'Enter') {
+  if (evt.key === ENTER_NUM) {
     getStarted();
     renderPins(notifications);
   }
@@ -141,10 +143,10 @@ var getStarted = function () {
   getAddres(mainPinCenterX - MAINPIN_WIDTH / 2, mainPinCenterY - MAINPIN_WIDTH / 2);
   roomFeild.addEventListener('change', guestFieldChangeHandler);
   guestField.addEventListener('click', guestFieldChangeHandler);
-  typeField.addEventListener('change', typeFiledCgangeHandler);
-  priceField.addEventListener('click', typeFiledCgangeHandler);
-  arriveField.addEventListener('change', inFieldsChangheHandler);
-  departField.addEventListener('change', OutFieldsChangheHandler);
+  typeField.addEventListener('change', typeFiledChangeHandler);
+  priceField.addEventListener('click', typeFiledChangeHandler);
+  arriveField.addEventListener('change', inFieldsChangeHandler);
+  departField.addEventListener('change', OutFieldsChangeHandler);
   resetButton.addEventListener('click', resetButtonClickHandler);
   mainPin.removeEventListener('mousedown', mainPinDragHandler);
   mainPin.removeEventListener('keydown', mainPinKeyHandler);
@@ -159,10 +161,10 @@ var resetPage = function () {
   mainPin.addEventListener('keydown', mainPinKeyHandler);
   roomFeild.removeEventListener('change', guestFieldChangeHandler);
   guestField.removeEventListener('click', guestFieldChangeHandler);
-  typeField.removeEventListener('change', typeFiledCgangeHandler);
-  priceField.removeEventListener('click', typeFiledCgangeHandler);
-  arriveField.removeEventListener('change', inFieldsChangheHandler);
-  departField.removeEventListener('change', OutFieldsChangheHandler);
+  typeField.removeEventListener('change', typeFiledChangeHandler);
+  priceField.removeEventListener('click', typeFiledChangeHandler);
+  arriveField.removeEventListener('change', inFieldsChangeHandler);
+  departField.removeEventListener('change', OutFieldsChangeHandler);
   resetButton.removeEventListener('click', resetButtonClickHandler);
   cardRemover();
 };
@@ -174,7 +176,7 @@ var resetButtonClickHandler = function () {
 var resetButton = document.querySelector('.ad-form__reset');
 
 var createNotification = function (avatarImg, position, flatType, arrive, depart, perks) {
-  var customNotification = {
+  return {
     author: {
       avatar: avatarImg,
     },
@@ -196,7 +198,6 @@ var createNotification = function (avatarImg, position, flatType, arrive, depart
       y: getRandomInRange(MAP_RANGEY_MIN, MAP_RANGEY_MAX - PIN_HEIGHT) + PIN_HEIGHT
     }
   };
-  return customNotification;
 };
 
 var createNotifications = function (avatarImg, position, flatType, arrive, depart, perks, photo) {
@@ -305,7 +306,7 @@ var renderCard = function (obj) {
     window.removeEventListener('keydown', closeButtonKeyHandler);
   };
   var closeButtonKeyHandler = function (evt) {
-    if (evt.key === 'Escape') {
+    if (evt.key === ESCAPE_NUM) {
       removeCard();
       closeButton.removeEventListener('click', closeButtonClickhandler);
       window.removeEventListener('keydown', closeButtonKeyHandler);
@@ -435,15 +436,15 @@ var setOut = function () {
 };
 
 
-var inFieldsChangheHandler = function () {
+var inFieldsChangeHandler = function () {
   setIn();
 };
 
-var OutFieldsChangheHandler = function () {
+var OutFieldsChangeHandler = function () {
   setOut();
 };
 
-var typeFiledCgangeHandler = function () {
+var typeFiledChangeHandler = function () {
   setPrice();
 };
 
