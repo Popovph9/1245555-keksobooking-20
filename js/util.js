@@ -36,7 +36,7 @@
     window.form.arriveField.addEventListener('change', window.form.inFieldsChangeHandler);
     window.form.departField.addEventListener('change', window.form.outFieldsChangeHandler);
     resetButton.addEventListener('click', resetButtonClickHandler);
-    mainPin.removeEventListener('mousedown', mainPinDragHandler);
+    mainPin.removeEventListener('mousedown', mainPinClickHandler);
     mainPin.removeEventListener('keydown', mainPinKeyHandler);
   };
 
@@ -52,12 +52,13 @@
     window.form.arriveField.removeEventListener('change', window.form.inFieldsChangeHandler);
     window.form.departField.removeEventListener('change', window.form.outFieldsChangeHandler);
     resetButton.removeEventListener('click', resetButtonClickHandler);
-    mainPin.addEventListener('mousedown', mainPinDragHandler);
+    mainPin.addEventListener('mousedown', mainPinClickHandler);
     mainPin.addEventListener('keydown', mainPinKeyHandler);
+    window.map.mainPinReset();
     window.card.cardRemover();
   };
 
-  var mainPinDragHandler = function (evt) {
+  var mainPinClickHandler = function (evt) {
     if (evt.which === 1) {
       getStarted();
       window.pins.renderPins(window.data.notifications);
@@ -75,6 +76,7 @@
     resetPage();
   };
 
-  mainPin.addEventListener('mousedown', mainPinDragHandler);
+  mainPin.addEventListener('mousedown', mainPinClickHandler);
   mainPin.addEventListener('keydown', mainPinKeyHandler);
+  mainPin.addEventListener('mousedown', window.map.mainPinDargHandler);
 })();
