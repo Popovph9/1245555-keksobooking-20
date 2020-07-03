@@ -107,13 +107,7 @@ window.card = (function () {
 
     cardRemover: function () {
       var card = document.querySelector('article');
-      var removeCard = function () {
-        card.remove(card);
-      };
-
-      if (~card) {
-        removeCard();
-      }
+      card.remove(card);
     }
   };
 })();

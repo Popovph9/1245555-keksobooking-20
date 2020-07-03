@@ -38,6 +38,7 @@
     resetButton.addEventListener('click', resetButtonClickHandler);
     mainPin.removeEventListener('mousedown', mainPinClickHandler);
     mainPin.removeEventListener('keydown', mainPinKeyHandler);
+    window.pins.renderPins(window.data.notifications);
   };
 
   var resetPage = function () {
@@ -55,28 +56,29 @@
     mainPin.addEventListener('mousedown', mainPinClickHandler);
     mainPin.addEventListener('keydown', mainPinKeyHandler);
     window.map.mainPinReset();
-    window.card.cardRemover();
+    if (document.querySelector('article')) {
+      window.card.cardRemover();
+    }
   };
 
   var mainPinClickHandler = function (evt) {
     if (evt.which === 1) {
       getStarted();
-      window.pins.renderPins(window.data.notifications);
     }
   };
 
   var mainPinKeyHandler = function (evt) {
     if (evt.key === ENTER_NUM) {
       getStarted();
-      window.pins.renderPins(window.data.notifications);
     }
   };
 
   var resetButtonClickHandler = function () {
     resetPage();
+    window.pins.removePin();
   };
 
   mainPin.addEventListener('mousedown', mainPinClickHandler);
   mainPin.addEventListener('keydown', mainPinKeyHandler);
-  mainPin.addEventListener('mousedown', window.map.mainPinDargHandler);
+  mainPin.addEventListener('mousedown', window.map.mainPinDragHandler);
 })();
