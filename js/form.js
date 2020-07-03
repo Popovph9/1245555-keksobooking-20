@@ -1,8 +1,8 @@
 'use strict';
 
 window.form = (function () {
-  var MAINPIN_WIDTH = 62;
-  var MAINPIN_HEIGHT = 84;
+  var MAINPIN_WIDTH = 65;
+  var MAINPIN_HEIGHT = 82;
   var MAP_WIDTH = 1200;
   var MAP_HEIGHT = 750;
   var ROOMS = {
@@ -123,7 +123,7 @@ window.form = (function () {
 
   return {
     MAINPIN_WIDTH: 62,
-
+    MAP_WIDTH: 1200,
     MAINPIN_HEIGHT: 84,
 
     mainForm: document.querySelector('.ad-form'),
@@ -145,8 +145,8 @@ window.form = (function () {
     departField: mainForm.querySelector('#timeout'),
 
     getAddres: function (x, y) {
-      var coordX = x + MAINPIN_WIDTH / 2;
-      var coordY = y + MAINPIN_HEIGHT;
+      var coordX = Math.round(x + MAINPIN_WIDTH / 2);
+      var coordY = Math.round(y + MAINPIN_HEIGHT);
       addresField.value = coordX + ',' + coordY;
     },
 
