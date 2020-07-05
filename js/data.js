@@ -1,7 +1,7 @@
 'use strict';
 
 window.data = (function () {
-  var PINS = 8;
+  /* var PINS = 8;
   var AVATAR = ['img/avatars/user01.png', 'img/avatars/user02.png', 'img/avatars/user03.png', 'img/avatars/user04.png', 'img/avatars/user05.png', 'img/avatars/user06.png', 'img/avatars/user07.png', 'img/avatars/user08.png'];
   var ADDRESS = '600, 350';
   var FLAT_TYPE = ['palace', 'flat', 'house', 'bungalo'];
@@ -48,11 +48,11 @@ window.data = (function () {
       notificationArray.push(notification);
     }
     return notificationArray;
-  };
+  }; */
 
 
   return {
     PINS: 8,
-    notifications: createNotifications(AVATAR, ADDRESS, FLAT_TYPE, CHECKIN, CHECKOUT, FEATURES, PHOTOS)
+    /* notifications: createNotifications(AVATAR, ADDRESS, FLAT_TYPE, CHECKIN, CHECKOUT, FEATURES, PHOTOS) */
   };
 })();
