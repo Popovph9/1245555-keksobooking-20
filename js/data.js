@@ -50,6 +50,7 @@ window.data = (function () {
     return notificationArray;
   };
 
+
   return {
     PINS: 8,
     notifications: createNotifications(AVATAR, ADDRESS, FLAT_TYPE, CHECKIN, CHECKOUT, FEATURES, PHOTOS)
