@@ -38,7 +38,8 @@
     resetButton.addEventListener('click', resetButtonClickHandler);
     mainPin.removeEventListener('mousedown', mainPinClickHandler);
     mainPin.removeEventListener('keydown', mainPinKeyHandler);
-    window.pins.renderPins(window.data.notifications);
+    window.backend.load(window.pins.loadDataHandler);
+    /* window.pins.renderPins(window.data.notifications); */
   };
 
   var resetPage = function () {

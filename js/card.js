@@ -94,7 +94,7 @@ window.card = (function () {
 
       var cardFeatures = cardFragment.querySelector('.popup__features');
 
-      renderFeature(cardFeatures, obj.offer.feature);
+      renderFeature(cardFeatures, obj.offer.features);
 
       cardFragment.querySelector('.popup__description').textContent = obj.offer.description;
 
