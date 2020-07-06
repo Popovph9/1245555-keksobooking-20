@@ -34,17 +34,15 @@ window.form = (function () {
     'one': '13:00',
     'two': '14:00'
   };
+  var mainContent = document.querySelector('main');
 
   var mainForm = document.querySelector('.ad-form');
-
   var roomFeild = mainForm.querySelector('#room_number');
   var guestField = mainForm.querySelector('#capacity');
   var guestFieldOptions = guestField.querySelectorAll('option');
-
   var addresField = mainForm.querySelector('#address');
 
   var mainPinCenterX = Math.round(MAP_WIDTH / 2);
-
   var mainPinCenterY = Math.round(MAP_HEIGHT / 2 + MAINPIN_WIDTH / 2);
 
   addresField.value = mainPinCenterX + ',' + mainPinCenterY;
@@ -164,6 +162,62 @@ window.form = (function () {
 
     guestFieldChangeHandler: function () {
       setGuests();
+    },
+
+    createErrorMessage: function () {
+      var errorform = document.querySelector('#error').content.querySelector('.error');
+      var errorMessage = errorform.cloneNode(true);
+      var errorButton = errorMessage.querySelector('.error__button');
+
+      var messageRemover = function () {
+        errorMessage.remove();
+
+        errorButton.removeEventListener('click', messageRemover);
+        window.removeEventListener('click', messageRemover);
+        window.removeEventListener('keydown', closeButtonKeyHandler);
+      };
+
+      var closeButtonKeyHandler = function (evt) {
+        if (evt.key === window.card.ESCAPE_NUM) {
+          errorMessage.remove();
+
+          errorButton.removeEventListener('click', messageRemover);
+          window.removeEventListener('click', messageRemover);
+          window.removeEventListener('keydown', closeButtonKeyHandler);
+        }
+      };
+
+      errorButton.addEventListener('click', messageRemover);
+      window.addEventListener('click', messageRemover);
+      window.addEventListener('keydown', closeButtonKeyHandler);
+
+      mainContent.appendChild(errorMessage);
+    },
+
+    createSuccessMessage: function () {
+      var successForm = document.querySelector('#success').content.querySelector('.success');
+      var successMessage = successForm.cloneNode(true);
+
+      var messageRemover = function () {
+        successMessage.remove();
+
+        window.removeEventListener('click', messageRemover);
+        window.removeEventListener('keydown', closeButtonKeyHandler);
+      };
+
+      var closeButtonKeyHandler = function (evt) {
+        if (evt.key === window.card.ESCAPE_NUM) {
+          successMessage.remove();
+
+          window.removeEventListener('click', messageRemover);
+          window.removeEventListener('keydown', closeButtonKeyHandler);
+        }
+      };
+
+      window.addEventListener('click', messageRemover);
+      window.addEventListener('keydown', closeButtonKeyHandler);
+
+      mainContent.appendChild(successMessage);
     }
   };
 })();
