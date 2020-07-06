@@ -44,6 +44,8 @@ window.card = (function () {
   };
 
   return {
+    ESCAPE_NUM: 'Escape',
+
     renderCard: function (obj) {
 
       var closeButton = cardFragment.querySelector('.popup__close');
@@ -70,7 +72,6 @@ window.card = (function () {
 
       window.addEventListener('keydown', closeButtonKeyHandler);
       closeButton.addEventListener('click', closeButtonClickhandler);
-      window.addEventListener('keydown', closeButtonKeyHandler);
 
       cardFragment.querySelector('.popup__avatar').src = obj.author.avatar;
       cardFragment.querySelector('.popup__title').textContent = obj.offer.title;
