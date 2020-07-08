@@ -13,12 +13,31 @@ window.map = (function () {
   var map = document.querySelector('.map');
   var mapFilters = map.querySelector('.map__filters');
   var mainPin = document.querySelector('.map__pin--main');
-
   mapFilters.classList.add('map__filters--disabled');
+
+  var filtersFeaturesSection = mapFilters.querySelector('#housing-features');
+
 
   return {
     map: document.querySelector('.map'),
     mapFilters: map.querySelector('.map__filters'),
+
+    filtersFields: mapFilters.querySelectorAll('select'),
+    filtersBoxes: filtersFeaturesSection.querySelectorAll('input'),
+
+    hideFields: function (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].setAttribute('disabled', 'disabled');
+      }
+      return arr;
+    },
+
+    showFeilds: function (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        arr[i].removeAttribute('disabled', 'disabled');
+      }
+      return arr;
+    },
 
     mainPinDragHandler: function (evt) {
       evt.preventDefault();

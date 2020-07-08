@@ -50,9 +50,8 @@ window.card = (function () {
 
       var closeButton = cardFragment.querySelector('.popup__close');
       var removeCard = function () {
-        var card = document.querySelector('article');
-        if (~card) {
-          card.remove(card);
+        if (document.querySelector('article')) {
+          window.card.cardRemover();
         }
       };
 
