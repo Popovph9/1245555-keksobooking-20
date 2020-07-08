@@ -6,29 +6,6 @@ window.pins = (function () {
   var pinsOnMap = document.querySelector('.map__pins');
   var similarPin = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  var houseTypefilter = document.querySelector('#housing-type');
-
-
-  var notifications = [];
-
-  var updatePins = function () {
-    var filteredFlats = notifications.slice().filter(function (it) {
-      if (houseTypefilter.value === 'any') {
-        return notifications.slice();
-      }
-      return it.offer.type === houseTypefilter.value;
-    });
-    window.pins.removePin();
-    renderPins(filteredFlats);
-  };
-
-  var houseTypeChengeHandler = function () {
-    updatePins();
-    if (document.querySelector('article')) {
-      window.card.cardRemover();
-    }
-  };
-
   var renderPins = function (data) {
     var takeNumber = data.length > PINS ? PINS : data.length;
     for (var i = 0; i < takeNumber; i++) {
@@ -55,20 +32,7 @@ window.pins = (function () {
   };
 
   return {
-    houseTypeChengeHandler: houseTypeChengeHandler,
-
-    houseTypefilter: houseTypefilter,
-
-    loadDataHandler: function (data) {
-      notifications = data;
-      renderPins(notifications);
-
-      window.map.showFeilds(window.map.filtersFields);
-      window.map.showFeilds(window.map.filtersBoxes);
-
-      houseTypefilter.addEventListener('change', houseTypeChengeHandler);
-    },
-
+    renderPins: renderPins,
 
     removePin: function () {
       var renderedPins = pinsOnMap.getElementsByTagName('button');

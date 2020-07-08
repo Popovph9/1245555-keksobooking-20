@@ -48,7 +48,7 @@
     mainPin.removeEventListener('mousedown', mainPinClickHandler);
     mainPin.removeEventListener('keydown', mainPinKeyHandler);
     window.form.mainForm.addEventListener('submit', submitHandler);
-    window.backend.load(window.pins.loadDataHandler);
+    window.backend.load(window.filters.loadDataHandler);
   };
 
   var resetPage = function () {
@@ -70,7 +70,7 @@
     mainPin.addEventListener('mousedown', mainPinClickHandler);
     mainPin.addEventListener('keydown', mainPinKeyHandler);
     window.map.mainPinReset();
-    window.pins.houseTypefilter.removeEventListener('change', window.pins.houseTypeChengeHandler);
+    window.filters.houseTypefilter.removeEventListener('change', window.filters.houseTypeChengeHandler);
     window.pins.removePin();
     if (document.querySelector('article')) {
       window.card.cardRemover();
