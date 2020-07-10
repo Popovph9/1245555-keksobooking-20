@@ -10,23 +10,6 @@
 
   resetButton.setAttribute('disabled', 'disabled');
   submitButton.setAttribute('disabled', 'disabled');
-
-  /* var hideFields = function (arr) {
-    for (var i = 0; i < arr.length - 1; i++) {
-      arr[i].setAttribute('disabled', 'disabled');
-    }
-    return arr;
-  }; */
-
-  /* hideFields(filds);
-
-   var showFeilds = function (arr) {
-    for (var i = 0; i < arr.length - 1; i++) {
-      arr[i].removeAttribute('disabled', 'disabled');
-    }
-    return arr;
-  }; */
-
   window.map.hideFields(window.map.filtersFields);
   window.map.hideFields(window.map.filtersBoxes);
 
@@ -70,12 +53,17 @@
     mainPin.addEventListener('mousedown', mainPinClickHandler);
     mainPin.addEventListener('keydown', mainPinKeyHandler);
     window.map.mainPinReset();
-    window.filters.houseTypefilter.removeEventListener('change', window.filters.houseTypeChengeHandler);
     window.pins.removePin();
+    window.filters.handlerRemover(window.map.filtersBoxes, 'change', window.filters.filtersChangeHandler);
+    window.filters.houseTypefilter.removeEventListener('change', window.filters.filtersChangeHandler);
+    window.filters.roomsFilter.removeEventListener('change', window.filters.filtersChangeHandler);
+    window.filters.guestFilter.removeEventListener('change', window.filters.filtersChangeHandler);
+    window.filters.priceFilter.removeEventListener('change', window.filters.filtersChangeHandler);
+    window.filters.resetFilters();
+    window.form.mainForm.removeEventListener('submit', submitHandler);
     if (document.querySelector('article')) {
       window.card.cardRemover();
     }
-    window.form.mainForm.addEventListener('submit', submitHandler);
   };
 
   var mainPinClickHandler = function (evt) {
