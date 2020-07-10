@@ -64,7 +64,7 @@
   };
 
   var filtersChangeHandler = function () {
-    updatePins();
+    window.debounce(updatePins);
     if (document.querySelector('article')) {
       window.card.cardRemover();
     }
