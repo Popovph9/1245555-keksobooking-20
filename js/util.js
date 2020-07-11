@@ -27,6 +27,10 @@
     window.form.priceField.addEventListener('click', window.form.typeFiledChangeHandler);
     window.form.arriveField.addEventListener('change', window.form.inFieldsChangeHandler);
     window.form.departField.addEventListener('change', window.form.outFieldsChangeHandler);
+    window.avatar.userAvatarChooser.removeAttribute('disabled', 'disabled');
+    window.avatar.flatAvatarChooser.removeAttribute('disabled', 'disabled');
+    window.avatar.userAvatarChooser.addEventListener('change', window.avatar.userAvatarChangeHandler);
+    window.avatar.flatAvatarChooser.addEventListener('change', window.avatar.flatAvatarChangeHandler);
     resetButton.addEventListener('click', resetButtonClickHandler);
     mainPin.removeEventListener('mousedown', mainPinClickHandler);
     mainPin.removeEventListener('keydown', mainPinKeyHandler);
@@ -49,6 +53,10 @@
     window.form.priceField.removeEventListener('click', window.form.typeFiledChangeHandler);
     window.form.arriveField.removeEventListener('change', window.form.inFieldsChangeHandler);
     window.form.departField.removeEventListener('change', window.form.outFieldsChangeHandler);
+    window.avatar.userAvatarChooser.removeEventListener('change', window.avatar.userAvatarChangeHandler);
+    window.avatar.flatAvatarChooser.removeEventListener('change', window.avatar.flatAvatarChangeHandler);
+    window.avatar.userAvatarChooser.setAttribute('disabled', 'disabled');
+    window.avatar.flatAvatarChooser.setAttribute('disabled', 'disabled');
     resetButton.removeEventListener('click', resetButtonClickHandler);
     mainPin.addEventListener('mousedown', mainPinClickHandler);
     mainPin.addEventListener('keydown', mainPinKeyHandler);
@@ -61,6 +69,7 @@
     window.filters.priceFilter.removeEventListener('change', window.filters.filtersChangeHandler);
     window.filters.resetFilters();
     window.form.mainForm.removeEventListener('submit', submitHandler);
+    window.avatar.avatarReset();
     if (document.querySelector('article')) {
       window.card.cardRemover();
     }

@@ -46,6 +46,8 @@ window.card = (function () {
   return {
     ESCAPE_NUM: 'Escape',
 
+    removeChildren: removeChildren,
+
     renderCard: function (obj) {
 
       var closeButton = cardFragment.querySelector('.popup__close');
