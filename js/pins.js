@@ -20,8 +20,13 @@ window.pins = (function () {
     var currentPins = document.querySelectorAll('.map__pin');
 
     var elc = function (element, datanmbr) {
+      element.addEventListener('focus', function () {
+        element.classList.add('map__pin--active');
+      });
+      element.addEventListener('blur', function () {
+        element.classList.remove('map__pin--active');
+      });
       element.addEventListener('click', function () {
-        window.map.mapFilters.classList.remove('map__filters--disabled');
         window.card.renderCard(data[datanmbr]);
       });
     };
