@@ -47,14 +47,8 @@
     window.map.hideFields(window.map.filtersBoxes);
     window.form.mainForm.classList.add('ad-form--disabled');
     window.map.hideFields(filds);
-    window.form.roomFeild.removeEventListener('change', window.form.guestFieldChangeHandler);
     window.form.guestField.removeEventListener('click', window.form.guestFieldChangeHandler);
-    window.form.typeField.removeEventListener('change', window.form.typeFiledChangeHandler);
     window.form.priceField.removeEventListener('click', window.form.typeFiledChangeHandler);
-    window.form.arriveField.removeEventListener('change', window.form.inFieldsChangeHandler);
-    window.form.departField.removeEventListener('change', window.form.outFieldsChangeHandler);
-    window.avatar.userAvatarChooser.removeEventListener('change', window.avatar.userAvatarChangeHandler);
-    window.avatar.flatAvatarChooser.removeEventListener('change', window.avatar.flatAvatarChangeHandler);
     window.avatar.userAvatarChooser.setAttribute('disabled', 'disabled');
     window.avatar.flatAvatarChooser.setAttribute('disabled', 'disabled');
     resetButton.removeEventListener('click', resetButtonClickHandler);
@@ -62,11 +56,6 @@
     mainPin.addEventListener('keydown', mainPinKeyHandler);
     window.map.mainPinReset();
     window.pins.removePin();
-    window.filters.handlerRemover(window.map.filtersBoxes, 'change', window.filters.filtersChangeHandler);
-    window.filters.houseTypefilter.removeEventListener('change', window.filters.filtersChangeHandler);
-    window.filters.roomsFilter.removeEventListener('change', window.filters.filtersChangeHandler);
-    window.filters.guestFilter.removeEventListener('change', window.filters.filtersChangeHandler);
-    window.filters.priceFilter.removeEventListener('change', window.filters.filtersChangeHandler);
     window.filters.resetFilters();
     window.form.mainForm.removeEventListener('submit', submitHandler);
     window.avatar.avatarReset();

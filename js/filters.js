@@ -57,12 +57,6 @@
     }
   };
 
-  var handlerRemover = function (arr, action, handler) {
-    for (var i = 0; i < arr.length; i++) {
-      arr[i].removeEventListener(action, handler);
-    }
-  };
-
   var filtersChangeHandler = function () {
     window.debounce(updatePins);
     if (document.querySelector('article')) {
@@ -100,8 +94,6 @@
   };
 
   window.filters = {
-    handlerRemover: handlerRemover,
-
     loadDataHandler: loadDataHandler,
 
     filtersChangeHandler: filtersChangeHandler,
